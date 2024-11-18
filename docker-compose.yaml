@@ -2,16 +2,37 @@ version: '3.8'
 
 services:
   db:
-    image: postgres:latest
-    container_name: postgres_container
+    image: postgres:14-alpine
+    restart: always
+    volumes:
+      - pg_data:/var/lib/postgresql/data/
     environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: postgres
+      POSTGRES_DB: "postgres"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      PGDATA: /var/lib/postgresql/data/pg_data
     ports:
       - "5432:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-
+    networks:
+      - backend
+  # backend:
+  #   build: 
+  #     context: ./housebackend
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - .housebackend:/housebackend
+  #   ports:
+  #     - "8000:8000"
+  #   depends_on:
+  #     - db
+  #   networks:
+  #     - house
+  #   command: >
+  #     sh -c "python3 manage.py runserver 0.0.0.0:8000"
+  #   restart: on-failure
+networks:
+  backend:
+    driver: bridge
+    name: be-network
 volumes:
-  pgdata:
+  pg_data:
