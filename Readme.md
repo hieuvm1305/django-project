@@ -6,15 +6,18 @@ python3 -m venv venv
 
 source venv/bin/activate
 
-// freeze lib 
+// move to root project
+
+cd djproject
+
+// freeze lib
 
 pip freeze > requirements.txt
 
-// install lib 
+// install lib
 
 pip install -r requirements.txt
 
-// run docker compose 
+// run docker compose
 
 docker-compose up --build
-
